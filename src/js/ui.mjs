@@ -3,8 +3,6 @@ export class UI {
         this.gameContainer = gameContainer;
         this.createCanvas();
         this.createConfigMenu();
-        this.createModeButton();
-        this.createInstructions();
     }
 
     createCanvas() {
@@ -55,35 +53,6 @@ export class UI {
         `;
         
         document.body.appendChild(this.configMenu);
-    }
-
-    createModeButton() {
-        this.modeButton = document.createElement('button');
-        this.modeButton.textContent = 'Switch to Bot Mode';
-        this.modeButton.style.cssText = `
-            margin: 20px auto;
-            padding: 10px 20px;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            display: block;
-        `;
-        this.gameContainer.appendChild(this.modeButton);
-    }
-
-    createInstructions() {
-        this.instructions = document.createElement('div');
-        this.instructions.textContent = 'Player 1: W/S keys | Player 2: Up/Down arrow keys';
-        this.instructions.style.cssText = `
-            margin: 20px 0;
-            font-size: 18px;
-            color: white;
-            text-align: center;
-        `;
-        this.gameContainer.appendChild(this.instructions);
     }
 
     updateScore(leftScore, rightScore) {

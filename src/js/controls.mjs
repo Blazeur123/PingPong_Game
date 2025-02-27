@@ -26,14 +26,12 @@ export class Controls {
             display: none;
             z-index: 100;
         `;
-
+    
         this.configButton = document.createElement('button');
         this.configButton.textContent = 'Configure Controls';
         this.configButton.style.cssText = `
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            position: relative;
+            margin: 20px auto; /* Center the button horizontally */
             padding: 10px 20px;
             background: #4CAF50;
             color: white;
@@ -41,8 +39,9 @@ export class Controls {
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            display: block;
         `;
-
+    
         this.configMenu.innerHTML = `
             <h2 style="color: white; margin-bottom: 20px;">Configure Controls</h2>
             <div style="color: white; margin: 10px 0;">
@@ -70,14 +69,14 @@ export class Controls {
                 <button id="resetControls" style="background: #666; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Reset to Default</button>
             </div>
         `;
-
+    
         // Ajouter les éléments au DOM dans le bon ordre
         document.body.appendChild(this.configMenu);
         const gameContainer = document.querySelector('#gameContainer');
         if (gameContainer) {
             gameContainer.appendChild(this.configButton);
         }
-
+    
         this.setupConfigListeners();
         this.updateControlsDisplay();
     }
@@ -88,19 +87,19 @@ export class Controls {
             this.configMenu.style.display = 'block';
             this.updateControlsDisplay();
         });
-
+    
         // Gestion des inputs
         this.configMenu.querySelectorAll('input').forEach(input => {
             input.addEventListener('focus', this.handleInputFocus.bind(this));
         });
-
+    
         // Bouton Save & Close
         const saveButton = this.configMenu.querySelector('#saveControls');
         saveButton.addEventListener('click', () => {
             this.configMenu.style.display = 'none';
             this.updateKeys();
         });
-
+    
         // Bouton Reset to Default
         const resetButton = this.configMenu.querySelector('#resetControls');
         resetButton.addEventListener('click', () => {
@@ -108,7 +107,7 @@ export class Controls {
             this.updateControlsDisplay();
             this.updateKeys();
         });
-
+    
         // Fermeture en cliquant en dehors du menu
         document.addEventListener('click', (e) => {
             if (!this.configMenu.contains(e.target) && e.target !== this.configButton) {

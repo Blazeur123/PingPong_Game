@@ -16,57 +16,54 @@ export class Game {
     createBotControls() {
         const controlsContainer = document.createElement('div');
         controlsContainer.style.cssText = `
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            position: relative;
+            margin-top: 20px;
             display: flex;
-            flex-direction: row;
+            justify-content: center; /* Center elements horizontally */
             align-items: center;
             gap: 10px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px 20px;
-            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         `;
-
+    
         const speedSelect = document.createElement('select');
         speedSelect.style.cssText = `
-            padding: 5px 10px;
+            padding: 8px 12px;
             border-radius: 5px;
             border: none;
             background: white;
             cursor: pointer;
             font-size: 14px;
-            width: 120px;
+            width: 130px;
             text-align: center;
         `;
         
         const difficultySelect = document.createElement('select');
         difficultySelect.style.cssText = `
-            padding: 5px 10px;
+            padding: 8px 12px;
             border-radius: 5px;
             border: none;
             background: white;
             cursor: pointer;
             font-size: 14px;
-            width: 120px;
+            width: 130px;
             text-align: center;
-            margin-top: 5px;
             display: none;
         `;
-
+    
         this.botButton = document.createElement('button');
         this.botButton.textContent = 'Switch to Bot Mode';
         this.botButton.style.cssText = `
-            padding: 8px 15px;
+            padding: 10px 20px;
             background: #4CAF50;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
-            width: 120px;
-            margin-top: 5px;
+            width: 140px;
             transition: background 0.3s;
         `;
         this.botButton.addEventListener('mouseover', () => {
@@ -75,8 +72,8 @@ export class Game {
         this.botButton.addEventListener('mouseout', () => {
             this.botButton.style.background = '#4CAF50';
         });
-
-        // Ajout des options pour la vitesse
+    
+        // Add options for speed
         ['very-slow', 'slow', 'normal', 'fast'].forEach(speed => {
             const option = document.createElement('option');
             option.value = speed;
@@ -85,40 +82,40 @@ export class Game {
             ).join(' ');
             speedSelect.appendChild(option);
         });
-
-        // Ajout des options pour la difficulté
+    
+        // Add options for difficulty
         ['easy', 'medium', 'hard'].forEach(difficulty => {
             const option = document.createElement('option');
             option.value = difficulty;
             option.textContent = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
             difficultySelect.appendChild(option);
         });
-
+    
         // Event listeners
         speedSelect.value = 'normal';
         speedSelect.addEventListener('change', (e) => {
             this.ballSpeed = e.target.value;
             this.updateBallSpeed();
         });
-
+    
         this.botButton.addEventListener('click', () => {
             this.isBotMode = !this.isBotMode;
             this.botButton.textContent = this.isBotMode ? 'Switch to 2 Players' : 'Switch to Bot Mode';
             difficultySelect.style.display = this.isBotMode ? 'block' : 'none';
         });
-
+    
         difficultySelect.addEventListener('change', (e) => {
             this.botDifficulty = e.target.value;
         });
-
-        // Modifier l'ordre des éléments pour l'affichage horizontal
+    
+        // Arrange elements for horizontal display
         const controlsWrapper = document.createElement('div');
         controlsWrapper.style.cssText = `
             display: flex;
             gap: 10px;
             align-items: center;
         `;
-
+    
         controlsWrapper.appendChild(speedSelect);
         controlsWrapper.appendChild(this.botButton);
         controlsWrapper.appendChild(difficultySelect);
@@ -160,18 +157,27 @@ export class Game {
     }
 
     setupGame() {
-        // Créer un seul container pour le jeu
         const gameContainer = document.createElement('div');
         gameContainer.id = 'gameContainer';
-        document.body.innerHTML = ''; // Nettoyer le DOM existant
+        document.body.innerHTML = ''; // Clear existing DOM
         document.body.appendChild(gameContainer);
-        
-        // Initialiser l'UI avec le container
+    
+        // Add a title above the canvas
+        const title = document.createElement('h1');
+        title.textContent = 'Pong Game';
+        title.style.cssText = `
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+        `;
+        gameContainer.appendChild(title);
+    
+        // Initialize the UI with the container
         this.ui = new UI(gameContainer);
         this.canvas = this.ui.getCanvas();
         this.ctx = this.canvas.getContext('2d');
-        
-        // Initialiser les objets du jeu
+    
+        // Initialize game objects
         this.ball = new Ball(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
         this.leftPaddle = new Paddle(50);
         this.rightPaddle = new Paddle(CANVAS_WIDTH - 60);
